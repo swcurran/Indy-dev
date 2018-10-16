@@ -3,28 +3,29 @@ This is an easy to configure development environment to play around with Hyperle
 
 ## Prerequisites
 1. [Docker](https://docs.docker.com/install/#supported-platforms)
-2. Make for [Mac](https://stackoverflow.com/questions/10265742/how-to-install-make-and-gcc-on-a-mac#10265766) or [Debian Linux](https://stackoverflow.com/questions/11934997/how-to-install-make-in-ubuntu#11935185)
+2. [Git](https://git-scm.com/downloads)
+3. A Bash shell.  Bash is standard for Mac and Linux. For Windows, when you installed git from the downloads link above, you will also have installed git-bash.
 
+## Manage Script
 
-## Using with Unix systems (OS X and Linux)
+The repo includes the executable `manage` script to control the basic docker-compose commands you will need to use. Use it to do the following from the repo root directory:
 
-to build the indy_pool and indy_dev images run: `make build`
+- Build the containers: `./manage build`
+  - To force a full rebuild use: `./manage rebuild`
+- Run the Indy ledger and ledger browser web server: `./manage start`
+- Stop the ledger - ctrl-c from where you started it, or `./manage stop` from another terminal session
+- Remove persistent storage/reset the environment - `./manage rm`
 
-to start up the pool and the dev environment in the current working directory run: `make start`
+Note that this is all covered in the ./manage script usage. Run it with no parameters to see the parameters.
 
-to stop the docker containers, first exit the indy_dev container with `exit` and then run: `make stop`
+## Access the Indy CLI, bash and Python
 
-to cleanup the docker images built run: `make cleanup`
-
-## Windows
-Your milage may vary on Windows and will be tougher to work with, continue at your own risk.
-
-```
-docker build -f indy-pool.dockerfile -t indy_pool .
-docker build -f indy-dev.dockerfile -t indy_dev .
-docker run -itd --net=host -p 127.0.0.1:9701-9708:9701-9708 indy_pool
-docker run -it --net=host -p 127.0.0.1:8080:8080 -v %cd%:/home/indy indy_dev
-```
+- Build the containers - `./manage build`
+- Start the indy ledger - `./manage start`
+  - access the Ledger Browser Web Server at `http://localhost:9000`
+- In a separate terminal session (same directory), run `./manage cli` to go into the `indy-cli`
+  - To run `bash` run `./manage bash`. From there you can run `indy-cli` or python.
+  - In both cases, you are running in the client docker container. Within that is a `python` folder with getting started code (see below). The `python` folder is directly mounted from the `python` folder in this repo, so you can do code edits in your favourite editor and see the affects within the container without having to restart the project.
 
 ## Test Python environment
 Once inside the docker shell (started in step 2 of "how to start"):
@@ -48,10 +49,4 @@ Details to be added shortly
 * Add Java wrapper support (help wanted)
 * Add .net wrapper support (help wanted)
 * Add Objective C wrapper support (help wanted)
-
-## Makefile issues?
-```
-cd scripts
-chmod +x *.sh
-```
 
