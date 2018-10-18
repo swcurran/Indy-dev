@@ -44,10 +44,13 @@ case "$1" in
       docker-compose stop
     ;;
   build)
-      docker-compose build
+      docker build -t indy-node -f pool.dockerfile .
+      docker build -t indy-client -f client.dockerfile .
     ;;
   rebuild)
-      docker-compose build --no-cache
+      docker-compose build
+      docker build --no-cache -t indy-node -f pool.dockerfile .
+      docker build --no-cache -t indy-client -f client.dockerfile .
     ;;
   rm)
       docker-compose down -v --rm all

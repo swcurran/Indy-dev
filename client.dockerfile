@@ -1,11 +1,10 @@
-# Use BC Gov Indy images that have indy-sdk
-# Will have to be updated from time to time to stay up to date on the indy-sdk version
-FROM bcgovimages/von-image:py36-1.6-8
+FROM bcgovimages/von-image:py35-1.6-8
 
-ADD --chown=indy:indy indy_config.py /etc/indy/
+USER indy
 
-ADD --chown=indy:indy . $HOME
-RUN chmod uga+x scripts/* bin/*
+RUN pip install --no-cache-dir aiosqlite~=0.6.0
+
+ENV RUST_LOG ${RUST_LOG:-warning}
 
 RUN mkdir -p \
         $HOME/ledger/sandbox/data \
@@ -14,4 +13,8 @@ RUN mkdir -p \
         $HOME/.indy_client/wallet && \
     chmod -R ug+rw $HOME/log $HOME/ledger $HOME/.indy-cli $HOME/.indy_client
 
-ENV RUST_LOG ${RUST_LOG:-warning}
+ADD --chown=indy:indy indy_config.py /etc/indy/
+
+ADD --chown=indy:indy . $HOME
+
+RUN chmod uga+x scripts/* bin/*
