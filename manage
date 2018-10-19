@@ -16,15 +16,13 @@ usage () {
 
   start - Starts the 4 indy-node containers and a webserver to allow browsing the ledger.
 
-  rm - Reset the environment by removing the project containers and associated volumes.
-
   logs - Display the logs from the docker compose run (ctrl-c to exit).
 
   bash - Start client container in a bash shell in /home/indy.
 
   cli - Start indy-cli in the agent container.
 
-  stop - Stops the services.  This is a non-destructive process.  The containers
+  stop - Stops the services and removes the volumes (storage).  The containers
          are not deleted so they will be reused the next time you run start.
 
   rebuild - Force a full rebuild of the docker images (no cache)
@@ -38,13 +36,10 @@ case "$1" in
       docker-compose logs -f
     ;;
   cli)
-      docker exec -it -e MODE=cli  indy-dev_client_1 indy-cli
+      docker exec -it -e MODE=cli  indydev_client_1 indy-cli
     ;;
   bash)
-       docker exec -it -e MODE=cli  indy-dev_client_1 bash
-    ;;
-  stop)
-      docker-compose stop
+       docker exec -it -e MODE=cli  indydev_client_1 bash
     ;;
   build)
       docker build -t indy-node -f pool.dockerfile .
@@ -57,7 +52,7 @@ case "$1" in
   logs)
     docker-compose logs -f
     ;;
-  rm)
+  stop)
       docker-compose down -v
     ;;
   *)
