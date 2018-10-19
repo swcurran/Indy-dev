@@ -14,12 +14,7 @@ done
 mkdir -p ${SANDBOX_DIR}
 cp ${GENESIS_FILE} ${SANDBOX_DIR}/sandbox.txn
 
+# Hack endless loop to keep the client running
+touch .foo
+tail -f .foo
 
-if [ "$MODE" == "bash" ]; then
-	/bin/bash
-elif [ "$MODE" == "cli" ]; then
-	/bin/bash
-else
-	touch .foo
-	tail -f .foo
-fi
