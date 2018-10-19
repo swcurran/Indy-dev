@@ -9,6 +9,9 @@ cp /home/indy/ledger/sandbox/pool_transactions_genesis .indy_client/pool/sandbox
 
 if [ "$MODE" == "bash" ]; then
 	/bin/bash
+elif [ "$MODE" == "cli" ]; then
+	/bin/bash
 else
-	indy-cli
+	touch .foo
+	tail -f .foo
 fi

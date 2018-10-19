@@ -58,6 +58,8 @@ services:
     networks:
       services:
         ipv4_address: 173.17.0.150
+    depends_on:
+      - webserver
     volumes:
       - ./python:/home/indy/python
       - node1-data:/home/indy/ledger
